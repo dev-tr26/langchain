@@ -2,7 +2,7 @@ from dotenv import load_dotenv
 from langchain_huggingface import ChatHuggingFace, HuggingFaceEndpoint
 from google.cloud import firestore
 from langchain_google_firestore import FirestoreChatMessageHistory
-
+import os 
 '''
 
 # example store source : https//python.langchain.com/v0.2/docs/integration/memory/google_firestore/
@@ -27,9 +27,13 @@ steps to replace :
 
 '''
 
-PROJECT_ID = "langchain-96c91"
-SESSION_ID = ""
-COLLECTION_NAME = ""
+load_dotenv()
+
+PROJECT_ID = os.getenv("PROJECT_ID")
+SESSION_ID = os.getenv("SESSION_ID")
+COLLECTION_NAME = os.getenv("COLLECTION_NAME")
+
+
 
 
 print("initialising firestore client....")
@@ -38,7 +42,7 @@ client = firestore.Client(project=PROJECT_ID)
 print("initialising firestore Chat message History")
 chat_history = FirestoreChatMessageHistory(
     session_id=SESSION_ID,
-    collection_name=COLLECTION_NAME,
+    collection=COLLECTION_NAME,
     client=client,
 ) 
 
@@ -49,7 +53,7 @@ print(f'current Chat History : {chat_history.messages}')
 # initialises chat model 
 
 llm = HuggingFaceEndpoint(
-    repo_id="",
+    repo_id="microsoft/Phi-3-mini-4k-instruct",
     temperature=0.6,
     task='text-generation',
     max_new_tokens=512,
@@ -58,3 +62,17 @@ llm = HuggingFaceEndpoint(
 )
 
 chat = ChatHuggingFace(llm=llm, verbose=True) 
+
+print("Start chatting with AI. Type 'exit' to quit.")
+
+while True:
+    human_input = input("User: ")
+    if human_input.lower() == "exit":
+        break
+    
+    chat_history.add_user_message(human_input)
+    
+    ai_response = chat.invoke(chat_history.messages)
+    chat_history.add_ai_message(ai_response.content)
+    
+    print(f"AI: {ai_response}")
