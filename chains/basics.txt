@@ -1,1 +1,18 @@
+'''
 # helps create unified workflow and helps connect muiltiple tasks together using chains
+
+TASK 1 : create prompt template - > place holder addition with invoke()
+TASK 2 : passing final prompt to LLm
+Task 3 : convert o/p to another lang 
+TASK 4 : sending response to another mail 
+
+
+# above was sequential chaining 
+# next is parallel chaining tasks parallely w/o depending on each other
+
+# conditional chaining 
+# let you run a particular branch based on a condition it goes to that chain only 
+eg. user que - > technical issue chain  |------ result 
+             - > billing chain      ----|
+             - > faq chain          ----|
+'''
