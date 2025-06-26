@@ -47,3 +47,4 @@ chain = human_facts_template | model | StrOutputParser() | prepare_for_translati
 result = chain.invoke({"humans": "girls", "count" : 3})
 
 print(result)
+

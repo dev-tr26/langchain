@@ -2,6 +2,8 @@ from dotenv import load_dotenv
 from langchain.prompts import ChatPromptTemplate
 from langchain.schema.runnable import RunnableLambda,RunnableSequence
 from langchain_huggingface import HuggingFaceEndpoint,ChatHuggingFace
+from langchain.schema.output_parser import StrOutputParser
+
 
 load_dotenv()
 llm = HuggingFaceEndpoint(
